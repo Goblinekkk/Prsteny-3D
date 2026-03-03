@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3D Platební Prsten</title>
-<script src="https://js.stripe.com/v3/"></script>
+<title>Fidget Prsten 3D</title>
 
 <style>
 body {
@@ -32,10 +31,6 @@ h1 {
     max-width: 450px;
     margin: 40px auto;
     box-shadow: 0 0 40px rgba(192, 132, 252, 0.2);
-}
-
-.product h2 {
-    margin-top: 0;
 }
 
 .old-price {
@@ -88,49 +83,26 @@ footer {
 <body>
 
 <header>
-    <h1>Platební Prsten 3D</h1>
-    <p>Moderní placení. Stylově. Bezkontaktně.</p>
+    <h1>3D Fidget Prsten</h1>
+    <p>Otáčej ho kolem prstu. Uklidni mysl. Stylově.</p>
 </header>
 
 <section class="product">
     <div class="discount">🔥 MEGA SLEVA</div>
-    <h2>3D Smart Ring</h2>
-    <p>Elegantní bezkontaktní NFC platební prsten kompatibilní s terminály.</p>
+    <h2>Spin Ring 3D</h2>
+    <p>Minimalistický fidget prsten z 3D tiskárny s otočným středem. Pomáhá proti stresu a nudě.</p>
 
     <div class="old-price">1999 Kč</div>
     <div class="new-price">249 Kč</div>
 
-    <button id="checkout-button">Koupit nyní</button>
+    <button onclick="alert('Demo verze – zde bude platební brána')">
+        Koupit nyní
+    </button>
 </section>
 
 <footer>
-    © 2026 3D Pay Ring | Všechna práva vyhrazena
+    © 2026 Goblin DEV | Všechna práva vyhrazena
 </footer>
-
-<script>
-var stripe = Stripe("TVŮJ_PUBLIC_STRIPE_KEY"); // ← sem vlož svůj Stripe PUBLIC klíč
-
-document.getElementById("checkout-button").addEventListener("click", function () {
-    fetch("https://TVŮJ-SERVER/create-checkout-session", {
-        method: "POST",
-    })
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (session) {
-        return stripe.redirectToCheckout({ sessionId: session.id });
-    })
-    .then(function (result) {
-        if (result.error) {
-            alert(result.error.message);
-        }
-    })
-    .catch(function (error) {
-        console.error("Error:", error);
-        alert("Chyba při přesměrování na platbu.");
-    });
-});
-</script>
 
 </body>
 </html>

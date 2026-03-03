@@ -1,78 +1,105 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platební Prsten 3D</title>
-    <script src="https://js.stripe.com/v3/"></script>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: white;
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Platební Prsten</title>
+<script src="https://js.stripe.com/v3/"></script>
 
-        header {
-            padding: 50px 20px;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0b1f;
+    color: white;
+    text-align: center;
+}
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
+header {
+    padding: 60px 20px;
+}
 
-        .product {
-            background: white;
-            color: black;
-            padding: 40px;
-            border-radius: 15px;
-            max-width: 500px;
-            margin: 40px auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #c084fc;
+}
 
-        .price {
-            font-size: 2em;
-            margin: 20px 0;
-            color: #2c5364;
-        }
+.product {
+    background: #1a132f;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 450px;
+    margin: 40px auto;
+    box-shadow: 0 0 40px rgba(192, 132, 252, 0.2);
+}
 
-        button {
-            background: #2c5364;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+.product h2 {
+    margin-top: 0;
+}
 
-        button:hover {
-            background: #1b333d;
-        }
+.old-price {
+    text-decoration: line-through;
+    color: #aaa;
+    font-size: 1.2em;
+}
 
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-    </style>
+.new-price {
+    font-size: 2.5em;
+    color: #c084fc;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.discount {
+    background: #c084fc;
+    color: #0f0b1f;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+button {
+    background: #c084fc;
+    color: #0f0b1f;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1em;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #a855f7;
+}
+
+footer {
+    margin-top: 60px;
+    padding: 20px;
+    font-size: 0.8em;
+    opacity: 0.6;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-    <h1>Platební Prsten z 3D tiskárny</h1>
-    <p>Moderní způsob placení. Stylově. Bezkontaktně.</p>
+    <h1>Platební Prsten 3D</h1>
+    <p>Moderní placení. Stylově. Bezkontaktně.</p>
 </header>
 
 <section class="product">
+    <div class="discount">🔥 MEGA SLEVA</div>
     <h2>3D Smart Ring</h2>
-    <p>Elegantní bezkontaktní platební prsten kompatibilní s NFC terminály.</p>
-    <div class="price">1 990 Kč</div>
+    <p>Elegantní bezkontaktní NFC platební prsten kompatibilní s terminály.</p>
+
+    <div class="old-price">1999 Kč</div>
+    <div class="new-price">249 Kč</div>
+
     <button id="checkout-button">Koupit nyní</button>
 </section>
 
@@ -81,27 +108,28 @@
 </footer>
 
 <script>
-    var stripe = Stripe("TVŮJ_PUBLIC_STRIPE_KEY"); // Zde vlož svůj Stripe public key
+var stripe = Stripe("TVŮJ_PUBLIC_STRIPE_KEY"); // ← sem vlož svůj Stripe PUBLIC klíč
 
-    document.getElementById("checkout-button").addEventListener("click", function () {
-        fetch("/create-checkout-session", {
-            method: "POST",
-        })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (session) {
-            return stripe.redirectToCheckout({ sessionId: session.id });
-        })
-        .then(function (result) {
-            if (result.error) {
-                alert(result.error.message);
-            }
-        })
-        .catch(function (error) {
-            console.error("Error:", error);
-        });
+document.getElementById("checkout-button").addEventListener("click", function () {
+    fetch("https://TVŮJ-SERVER/create-checkout-session", {
+        method: "POST",
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (session) {
+        return stripe.redirectToCheckout({ sessionId: session.id });
+    })
+    .then(function (result) {
+        if (result.error) {
+            alert(result.error.message);
+        }
+    })
+    .catch(function (error) {
+        console.error("Error:", error);
+        alert("Chyba při přesměrování na platbu.");
     });
+});
 </script>
 
 </body>

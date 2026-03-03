@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platební Prsten 3D</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .product {
+            background: white;
+            color: black;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 40px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .price {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #2c5364;
+        }
+
+        button {
+            background: #2c5364;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1b333d;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Platební Prsten z 3D tiskárny</h1>
+    <p>Moderní způsob placení. Stylově. Bezkontaktně.</p>
+</header>
+
+<section class="product">
+    <h2>3D Smart Ring</h2>
+    <p>Elegantní bezkontaktní platební prsten kompatibilní s NFC terminály.</p>
+    <div class="price">1 990 Kč</div>
+    <button id="checkout-button">Koupit nyní</button>
+</section>
+
+<footer>
+    © 2026 3D Pay Ring | Všechna práva vyhrazena
+</footer>
+
+<script>
+    var stripe = Stripe("TVŮJ_PUBLIC_STRIPE_KEY"); // Zde vlož svůj Stripe public key
+
+    document.getElementById("checkout-button").addEventListener("click", function () {
+        fetch("/create-checkout-session", {
+            method: "POST",
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (session) {
+            return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function (error) {
+            console.error("Error:", error);
+        });
+    });
+</script>
+
+</body>
+</html>
